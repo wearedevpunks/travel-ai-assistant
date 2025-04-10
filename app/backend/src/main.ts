@@ -1,4 +1,5 @@
 import "source-map-support/register"
+import "tsconfig-paths/register"
 import { NestFactory } from "@nestjs/core"
 import { Log, logMemoryUsage } from "@punks/backend-core"
 import { AppModule } from "./app.module"

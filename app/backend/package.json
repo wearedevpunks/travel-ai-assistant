@@ -31,6 +31,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.0.7",
     "@punks/backend-core": "^0.0.84",
+    "@vercel/node": "^5.1.14",
     "ai": "^4.2.0",
     "dotenv": "^16.4.7",
     "lodash": "^4.17.21",

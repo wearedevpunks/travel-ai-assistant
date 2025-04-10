@@ -10,21 +10,22 @@ import {
 import { setupSwagger } from "./infrastructure/swagger/initialize"
 import { Settings } from "./settings"
 
-export const setupServer = async (app: INestApplication) => {
-  try {
-    const logLevel = (process.env.LOG_LEVEL as LogLevel) ?? LogLevel.Info
-    Log.configure({
-      provider: new ConsoleLogger(),
-      options: {
-        enabled: true,
-        level: logLevel,
-        maxMetaLength: 1000,
-        serialization:
-          process.env.LOGGING_SERIALIZE_META === "true"
-            ? MetaSerializationType.JSON
-            : MetaSerializationType.None,
-      },
-    })
+const initializeLogger = () => {
+  const logLevel = (process.env.LOG_LEVEL as LogLevel) ?? LogLevel.Info
+  Log.configure({
+    provider: new ConsoleLogger(),
+    options: {
+      enabled: true,
+      level: logLevel,
+      maxMetaLength: 1000,
+      serialization:
+        process.env.LOGGING_SERIALIZE_META === "true"
+          ? MetaSerializationType.JSON
+          : MetaSerializationType.None,
+    },
+  })
+
+  if (Settings.getDatadogLoggingEnabled()) {
     Log.configure({
       provider: new DatadogLogger({
         datadog: {
@@ -44,6 +45,9 @@ export const setupServer = async (app: INestApplication) => {
         serialization: MetaSerializationType.None,
       },
     })
+  }
+
+  if (Settings.getFileLoggingEnabled()) {
     Log.configure({
       provider: new FileLogger({
         service: {
@@ -59,20 +63,30 @@ export const setupServer = async (app: INestApplication) => {
         serialization: MetaSerializationType.None,
       },
     })
+  }
 
-    Log.getLogger("Main").info(`Logging initialized -> level:${logLevel}`)
+  Log.getLogger("Main").info(`Logging initialized -> level:${logLevel}`)
+}
 
-    if (Settings.getSwaggerEnabled()) {
-      Log.getLogger("Main").info("Setting up swagger")
-      setupSwagger(app, {
-        apiPath: "swagger",
-        description: "DuckAround Api",
-        title: "DuckAround Api",
-        version: "1.0",
-      })
-    } else {
-      Log.getLogger("Main").info("Swagger is disabled")
-    }
+const initializeSwagger = (app: INestApplication) => {
+  if (Settings.getSwaggerEnabled()) {
+    Log.getLogger("Main").info("Setting up swagger")
+    setupSwagger(app, {
+      apiPath: "swagger",
+      description: "DuckAround Api",
+      title: "DuckAround Api",
+      version: "1.0",
+    })
+  } else {
+    Log.getLogger("Main").info("Swagger is disabled")
+  }
+}
+
+export const setupServer = async (app: INestApplication) => {
+  try {
+    initializeLogger()
+
+    initializeSwagger(app)
 
     await app.init()
 

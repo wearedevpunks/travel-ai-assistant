@@ -16,6 +16,8 @@ const getRequiredEnvVariable = (key: string) => {
 }
 
 export const Settings = {
+  getFileLoggingEnabled: () => getBoolEnvVariable("FILE_LOGGING_ENABLED"),
+  getDatadogLoggingEnabled: () => getBoolEnvVariable("DATADOG_LOGGING_ENABLED"),
   getSwaggerEnabled: () => getBoolEnvVariable("SWAGGER_ENABLED"),
   getHttpPort: () => getEnvVariable("HTTP_PORT"),
   getOpenAiApiKey: () => getRequiredEnvVariable("OPENAI_API_KEY"),

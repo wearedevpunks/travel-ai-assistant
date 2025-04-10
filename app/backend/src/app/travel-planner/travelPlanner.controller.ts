@@ -37,13 +37,15 @@ import { travelPlannerSystemPrompt } from "./travelPlanner.prompts"
 import { CoreMessage, streamText } from "ai"
 import { createOpenAI } from "@ai-sdk/openai"
 import { Settings } from "@/settings"
+import { AiOpenaiSpeechService } from "@/integrations/ai/openai/services/speech"
 
 @ApiTags("Travel Planner")
 @Controller("v1/travel-planner")
 export class TravelPlannerController {
   constructor(
     private readonly userAssistantService: UserAssistantService,
-    private readonly itinerariesService: TravelItinerariesService
+    private readonly itinerariesService: TravelItinerariesService,
+    private readonly aiOpenaiSpeechService: AiOpenaiSpeechService
   ) {
     // Inject itinerary service into the tools
     setTravelItinerariesService(this.itinerariesService)
@@ -99,7 +101,14 @@ export class TravelPlannerController {
     @Res() res: Response
   ) {
     await executeStreamedSpeechAndStream(res, async () => {
-      return await this.userAssistantService.createTextToSpeech(request)
+      return await this.aiOpenaiSpeechService.convertTextToSpeech({
+        model: "tts-1",
+        input: request.text,
+        voice: request.voice || "alloy",
+        response_format: request.responseFormat || ("mp3" as const),
+        speed: request.speed || 1.0,
+        instructions: request.instructions,
+      })
     })
   }
 

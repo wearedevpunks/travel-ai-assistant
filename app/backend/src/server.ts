@@ -88,11 +88,10 @@ export const setupServer = async (app: INestApplication) => {
 
     initializeSwagger(app)
 
-    await app.init()
-
     app.enableCors({
       origin: "*",
     })
+    await app.init()
 
     return {
       success: true,

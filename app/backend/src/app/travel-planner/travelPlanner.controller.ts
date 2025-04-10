@@ -42,6 +42,7 @@ import {
   themeGenerationPrompt,
 } from "./travelPlanner.prompts"
 import { z } from "zod"
+import { newUuid } from "@punks/backend-core"
 
 @ApiTags("Travel Planner")
 @Controller("v1/travel-planner")
@@ -76,7 +77,16 @@ export class TravelPlannerController {
         primaryColor: z.string(),
         claim: z.string(),
       }),
-      prompt: themeGenerationPrompt,
+      messages: [
+        {
+          role: "system",
+          content: themeGenerationPrompt,
+        },
+        {
+          role: "user",
+          content: newUuid() + newUuid() + newUuid(),
+        },
+      ],
     })
 
     return theme

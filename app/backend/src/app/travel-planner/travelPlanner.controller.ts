@@ -34,6 +34,9 @@ import {
 import { TravelItinerary } from "./travelPlanner.dto"
 import { TravelItinerariesService } from "@/features/travel-itineraries/services/itineraries"
 import { travelPlannerSystemPrompt } from "./travelPlanner.prompts"
+import { CoreMessage, streamText } from "ai"
+import { createOpenAI } from "@ai-sdk/openai"
+import { Settings } from "@/settings"
 
 @ApiTags("Travel Planner")
 @Controller("v1/travel-planner")
@@ -42,7 +45,7 @@ export class TravelPlannerController {
     private readonly userAssistantService: UserAssistantService,
     private readonly itinerariesService: TravelItinerariesService
   ) {
-    // Inject repositories into the tools
+    // Inject itinerary service into the tools
     setTravelItinerariesService(this.itinerariesService)
   }
 
@@ -60,19 +63,24 @@ export class TravelPlannerController {
     @Res() res: Response
   ) {
     await executeStreamedCompletionAndStream(res, async () => {
-      return await this.userAssistantService.createStreamedCompletion({
-        userRequest: request,
-        definition: {
-          systemPrompt: travelPlannerSystemPrompt,
-          additionalTools: {
-            getTravelDestinations,
-            createTravelItinerary,
-            addItemToItinerary,
-            addDayToItinerary,
-            removeDayFromItinerary,
-            sendItineraryViaWhatsApp,
-          },
+      const openai = createOpenAI({
+        compatibility: "strict",
+        apiKey: Settings.getOpenAiApiKey(),
+      })
+
+      return streamText({
+        model: openai("gpt-4o-mini"),
+        system: travelPlannerSystemPrompt,
+        messages: request.messages as CoreMessage[],
+        tools: {
+          getTravelDestinations,
+          createTravelItinerary,
+          addItemToItinerary,
+          addDayToItinerary,
+          removeDayFromItinerary,
+          sendItineraryViaWhatsApp,
         },
+        maxSteps: 1, // this is the maximum number that the model is allowed to invoke tools
       })
     })
   }

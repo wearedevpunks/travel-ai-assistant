@@ -16,9 +16,9 @@ export class UserAssistantAIConversationHandler {
     userRequest: UserAssistantAIChatRequest
   }) {
     return await this.vercelAiService.createStreamedCompletion({
-      model: definition.model ?? {
-        model: Settings.getUserAssistantDefaultModel()!,
-        provider: Settings.getUserAssistantDefaultModelProvider()!,
+      model: {
+        model: "gpt-4o-mini",
+        provider: "openai",
       },
       prompt: {
         system: definition.systemPrompt,

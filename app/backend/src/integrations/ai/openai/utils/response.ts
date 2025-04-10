@@ -5,12 +5,12 @@ const logger = Log.getLogger("openai-response-utils")
 
 export const executeStreamedSpeechAndStream = async (
   res: Response,
-  func: () => Promise<{ stream: NodeJS.ReadableStream, contentType: string }>
+  func: () => Promise<{ stream: NodeJS.ReadableStream; contentType: string }>
 ) => {
   try {
     // Set proper headers for audio streaming
     const { stream, contentType } = await func()
-    
+
     res.setHeader("Content-Type", contentType)
     res.setHeader("Cache-Control", "no-cache")
     res.setHeader("Connection", "keep-alive")
@@ -19,9 +19,9 @@ export const executeStreamedSpeechAndStream = async (
     stream.pipe(res)
 
     // Handle stream errors
-    stream.on('error', (error) => {
+    stream.on("error", (error) => {
       logger.exception("Error in streaming speech", error)
-      
+
       if (!res.headersSent) {
         res.status(500).json({
           error: "Stream error",
@@ -53,16 +53,16 @@ export const executeSpeechToTextAndReturn = async <T>(
   try {
     // Process speech-to-text request
     const result = await func()
-    
+
     // Set headers and return JSON response
     res.setHeader("Content-Type", "application/json")
     res.setHeader("Cache-Control", "no-cache")
-    
+
     // Return the typed response
     res.status(200).json(result)
   } catch (error) {
     logger.exception("Error in speech-to-text endpoint", error)
-    
+
     // Return error response
     res.status(500).json({
       error: "Internal server error",

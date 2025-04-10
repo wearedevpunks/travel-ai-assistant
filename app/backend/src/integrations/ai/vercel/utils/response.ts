@@ -24,6 +24,10 @@ export const executeStreamedCompletionAndStream = async (
         })
       },
       status: 200,
+      onError: (error) => {
+        logger.exception("Error in stream", error as Error)
+        return "Internal server error"
+      },
     })
   } catch (error) {
     logger.exception("Error in aiChat endpoint", error)

@@ -9,7 +9,6 @@ import { APP_FILTER } from "@nestjs/core"
 import { ConfigModule } from "@nestjs/config"
 import { IntegrationModules } from "./integrations"
 import { InfrastructureModules } from "./infrastructure"
-import { ConstructModules } from "./constructs"
 import { CollectionModules } from "./collections"
 
 @Module({
@@ -23,7 +22,6 @@ import { CollectionModules } from "./collections"
     ...CollectionModules,
     ...InfrastructureModules,
     ...IntegrationModules,
-    ...ConstructModules,
     ...FeatureModules,
     ...AppModules,
   ],

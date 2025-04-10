@@ -24,14 +24,13 @@ import {
   sendItineraryViaWhatsApp,
   setTravelItinerariesService,
 } from "./travelPlanner.tools"
-import { UserAssistantService } from "@/features/user-assistant/services/assistant"
 import {
-  UserAssistantAIChatRequest,
-  UserAssistantTextToSpeechRequest,
-  UserAssistantSpeechToTextRequest,
-  UserAssistantSpeechToTextResponse,
-} from "@/features/user-assistant/handlers/ai-conversation/dto"
-import { TravelItinerary } from "./travelPlanner.dto"
+  TravelItinerary,
+  TravelAssistantAIChatRequest,
+  TravelAssistantSpeechToTextRequest,
+  TravelAssistantSpeechToTextResponse,
+  TravelAssistantTextToSpeechRequest,
+} from "./travelPlanner.dto"
 import { TravelItinerariesService } from "@/features/travel-itineraries/services/itineraries"
 import { travelPlannerSystemPrompt } from "./travelPlanner.prompts"
 import { CoreMessage, streamText } from "ai"
@@ -43,7 +42,6 @@ import { AiOpenaiSpeechService } from "@/integrations/ai/openai/services/speech"
 @Controller("v1/travel-planner")
 export class TravelPlannerController {
   constructor(
-    private readonly userAssistantService: UserAssistantService,
     private readonly itinerariesService: TravelItinerariesService,
     private readonly aiOpenaiSpeechService: AiOpenaiSpeechService
   ) {
@@ -61,7 +59,7 @@ export class TravelPlannerController {
     description: "Returns streamed AI response",
   })
   async aiChat(
-    @Body() request: UserAssistantAIChatRequest,
+    @Body() request: TravelAssistantAIChatRequest,
     @Res() res: Response
   ) {
     await executeStreamedCompletionAndStream(res, async () => {
@@ -97,7 +95,7 @@ export class TravelPlannerController {
     description: "Returns streamed audio response",
   })
   async textToSpeech(
-    @Body() request: UserAssistantTextToSpeechRequest,
+    @Body() request: TravelAssistantTextToSpeechRequest,
     @Res() res: Response
   ) {
     await executeStreamedSpeechAndStream(res, async () => {
@@ -120,7 +118,7 @@ export class TravelPlannerController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: "Returns transcribed text",
-    type: UserAssistantSpeechToTextResponse,
+    type: TravelAssistantSpeechToTextResponse,
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
@@ -131,13 +129,32 @@ export class TravelPlannerController {
     description: "Server error in processing speech",
   })
   async speechToText(
-    @Body() request: UserAssistantSpeechToTextRequest,
+    @Body() request: TravelAssistantSpeechToTextRequest,
     @Res() res: Response
   ) {
-    await executeSpeechToTextAndReturn<UserAssistantSpeechToTextResponse>(
+    await executeSpeechToTextAndReturn<TravelAssistantSpeechToTextResponse>(
       res,
       async () => {
-        return await this.userAssistantService.createSpeechToText(request)
+        // Convert base64 string to File object
+        const base64Data = request.audioData.split(",")[1] || request.audioData
+        const binaryData = Buffer.from(base64Data, "base64")
+        const blob = new Blob([binaryData], { type: "audio/webm" })
+
+        // Create a File object from the Blob
+        const file = new File([blob], "speech.webm", { type: "audio/webm" })
+
+        // Send to OpenAI for transcription
+        const result = await this.aiOpenaiSpeechService.convertSpeechToText({
+          model: request.model || "whisper-1",
+          language: request.language,
+          input: file,
+        })
+
+        // Create a properly typed response
+        return {
+          text: result.text,
+          language: request.language,
+        }
       }
     )
   }

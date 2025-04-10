@@ -1,0 +1,16 @@
+{
+  "name": "TravelPlan AI - Your Intelligent Travel Assistant",
+  "short_name": "TravelPlan AI",
+  "description": "Plan your perfect trip with AI assistance. Create personalized travel itineraries, discover destinations, and organize your adventures with ease.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#4F46E5",
+  "theme_color": "#4F46E5",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

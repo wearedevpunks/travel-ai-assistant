@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Backend:Attach",
+      "port": 9998,
+      "restart": true,
+      "stopOnEntry": false,
+      "protocol": "inspector"
+    },
+    {
+      "name": "Backend:TestCurrent",
+      "type": "node",
+      "request": "launch",
+      "runtimeVersion": "18",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/app/backend/core/node_modules/jest/bin/jest.js",
+        "${fileBasenameNoExtension}",
+        "--runInBand",
+        "--coverage",
+        "false"
+      ],
+      "cwd": "${workspaceFolder}/app/backend/core",
+      "console": "integratedTerminal"
+    }
+  ]
+}

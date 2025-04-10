@@ -8,7 +8,7 @@ import {
 
 export const GenericToolOutput = ({ toolInvocation }: ToolOutputProps) => {
   // Handle loading state
-  if (toolInvocation.state === "loading") {
+  if (toolInvocation.state === "call") {
     return (
       <LoadingOperationOutput
         message={`Loading data from ${toolInvocation.toolName}...`}

@@ -87,7 +87,7 @@ export const ChatInputForm = forwardRef<ChatInputFormRef, ChatInputFormProps>(
               }) as unknown as React.FormEvent
 
               // Manually submit the form using the ref
-              // @ts-ignore
+              // @ts-expect-error - TODO: fix this
               formRef.current.dispatchEvent(event)
             }
           }, 100) // Give a bit more time for state to update

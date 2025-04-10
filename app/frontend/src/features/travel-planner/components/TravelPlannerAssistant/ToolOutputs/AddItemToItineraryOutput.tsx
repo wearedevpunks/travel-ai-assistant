@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect } from 'react';
-import { ToolOutputProps } from ".";
-import { useTravelPlannerStore } from '../../../store';
-import { TravelItinerary } from '@/api/backend';
+import { useEffect } from "react"
+import { ToolOutputProps } from "."
+import { useTravelPlannerStore } from "../../../store"
+import { TravelItinerary } from "@/api/backend"
 
 type AddItemResult = {
   itineraryId: string
@@ -13,31 +13,38 @@ type AddItemResult = {
   dayNumber: number
 }
 
-export const AddItemToItineraryOutput = ({ toolInvocation }: ToolOutputProps) => {
-  const { loadItinerary, updateItinerary } = useTravelPlannerStore();
+export const AddItemToItineraryOutput = ({
+  toolInvocation,
+}: ToolOutputProps) => {
+  const { loadItinerary, updateItinerary } = useTravelPlannerStore()
 
   // Always call useEffect at the component top level
   // but only perform actions if conditions are met
   useEffect(() => {
     if (
-      toolInvocation.state === "success" && 
-      toolInvocation.result && 
+      toolInvocation.state === "result" &&
+      toolInvocation.result &&
       typeof toolInvocation.result === "object"
     ) {
-      const result = toolInvocation.result as AddItemResult;
-      
+      const result = toolInvocation.result as AddItemResult
+
       // If we have the full itinerary in the result, update it directly
       if (result.itinerary) {
-        updateItinerary(result.itinerary);
+        updateItinerary(result.itinerary)
       } else if (result.itineraryId) {
         // Otherwise, load it from the API
-        loadItinerary();
+        loadItinerary()
       }
     }
-  }, [toolInvocation.state, toolInvocation.result, loadItinerary, updateItinerary]);
+  }, [
+    toolInvocation.state,
+    toolInvocation.result,
+    loadItinerary,
+    updateItinerary,
+  ])
 
   // Handle loading state
-  if (toolInvocation.state === "loading") {
+  if (toolInvocation.state === "call") {
     return (
       <div className="bg-white border border-gray-200 rounded-lg p-4 my-2">
         <div className="flex items-start">
@@ -137,7 +144,9 @@ export const AddItemToItineraryOutput = ({ toolInvocation }: ToolOutputProps) =>
               Item was not added to itinerary
             </h3>
             <div className="mt-1 text-sm text-gray-600">
-              We couldn't add the item to your itinerary. The itinerary or specified day may not exist.
+              {
+                "We couldn't add the item to your itinerary. The itinerary or specified day may not exist."
+              }
             </div>
           </div>
         </div>
@@ -147,7 +156,7 @@ export const AddItemToItineraryOutput = ({ toolInvocation }: ToolOutputProps) =>
 
   // Get item type icon based on tool parameters
   const getItemIcon = () => {
-    if (!toolInvocation.params) {
+    if (!toolInvocation.result) {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -164,13 +173,17 @@ export const AddItemToItineraryOutput = ({ toolInvocation }: ToolOutputProps) =>
           <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
           <circle cx="12" cy="10" r="3" />
         </svg>
-      );
+      )
     }
-    
-    const item = toolInvocation.params.item as string || "";
-    const itemText = item.toLowerCase();
-    
-    if (itemText.includes("hotel") || itemText.includes("stay") || itemText.includes("lodging")) {
+
+    const item = (toolInvocation.result.item as string) || ""
+    const itemText = item.toLowerCase()
+
+    if (
+      itemText.includes("hotel") ||
+      itemText.includes("stay") ||
+      itemText.includes("lodging")
+    ) {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -189,8 +202,12 @@ export const AddItemToItineraryOutput = ({ toolInvocation }: ToolOutputProps) =>
           <path d="M12 4v6" />
           <path d="M2 18h20" />
         </svg>
-      );
-    } else if (itemText.includes("restaurant") || itemText.includes("food") || itemText.includes("dining")) {
+      )
+    } else if (
+      itemText.includes("restaurant") ||
+      itemText.includes("food") ||
+      itemText.includes("dining")
+    ) {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -208,7 +225,7 @@ export const AddItemToItineraryOutput = ({ toolInvocation }: ToolOutputProps) =>
           <path d="M7 2v20" />
           <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
         </svg>
-      );
+      )
     } else if (itemText.includes("flight") || itemText.includes("plane")) {
       return (
         <svg
@@ -225,7 +242,7 @@ export const AddItemToItineraryOutput = ({ toolInvocation }: ToolOutputProps) =>
         >
           <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
         </svg>
-      );
+      )
     } else if (itemText.includes("train")) {
       return (
         <svg
@@ -244,8 +261,12 @@ export const AddItemToItineraryOutput = ({ toolInvocation }: ToolOutputProps) =>
           <path d="M4 11h16" />
           <path d="M12 4v16" />
         </svg>
-      );
-    } else if (itemText.includes("attraction") || itemText.includes("visit") || itemText.includes("sightseeing")) {
+      )
+    } else if (
+      itemText.includes("attraction") ||
+      itemText.includes("visit") ||
+      itemText.includes("sightseeing")
+    ) {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -265,7 +286,7 @@ export const AddItemToItineraryOutput = ({ toolInvocation }: ToolOutputProps) =>
           <path d="M12 14v4" />
           <path d="M8 14h8" />
         </svg>
-      );
+      )
     } else if (itemText.includes("activity") || itemText.includes("tour")) {
       return (
         <svg
@@ -285,8 +306,11 @@ export const AddItemToItineraryOutput = ({ toolInvocation }: ToolOutputProps) =>
           <path d="m6 8 6 2 6-2" />
           <path d="M12 10v4" />
         </svg>
-      );
-    } else if (itemText.includes("transport") || itemText.includes("transfer")) {
+      )
+    } else if (
+      itemText.includes("transport") ||
+      itemText.includes("transfer")
+    ) {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -307,7 +331,7 @@ export const AddItemToItineraryOutput = ({ toolInvocation }: ToolOutputProps) =>
           <line x1="9" y1="4" x2="9" y2="7" />
           <path d="M12 4v3" />
         </svg>
-      );
+      )
     } else {
       return (
         <svg
@@ -325,9 +349,9 @@ export const AddItemToItineraryOutput = ({ toolInvocation }: ToolOutputProps) =>
           <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
           <circle cx="12" cy="10" r="3" />
         </svg>
-      );
+      )
     }
-  };
+  }
 
   return (
     <div className="bg-white border border-green-200 rounded-lg p-4 my-2">
@@ -340,11 +364,15 @@ export const AddItemToItineraryOutput = ({ toolInvocation }: ToolOutputProps) =>
             Item Added to Itinerary
           </h3>
           <div className="mt-1 text-sm text-gray-600">
-            {result.addedItem || toolInvocation.params?.item || "New item"} 
-            {result.dayNumber ? ` added to Day ${result.dayNumber}` : " added to itinerary"}
-            {result.hours && <span className="ml-2 inline-block bg-gray-100 text-gray-800 text-xs px-2 py-0.5 rounded-full">
-              {result.hours} {result.hours === 1 ? 'hour' : 'hours'}
-            </span>}
+            {result.addedItem || toolInvocation.result?.item || "New item"}
+            {result.dayNumber
+              ? ` added to Day ${result.dayNumber}`
+              : " added to itinerary"}
+            {result.hours && (
+              <span className="ml-2 inline-block bg-gray-100 text-gray-800 text-xs px-2 py-0.5 rounded-full">
+                {result.hours} {result.hours === 1 ? "hour" : "hours"}
+              </span>
+            )}
           </div>
         </div>
       </div>

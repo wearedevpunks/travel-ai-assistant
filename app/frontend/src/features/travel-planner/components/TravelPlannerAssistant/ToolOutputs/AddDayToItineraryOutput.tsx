@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect } from 'react';
-import { ToolOutputProps } from ".";
-import { useTravelPlannerStore } from '../../../store';
-import { TravelItinerary } from '@/api/backend';
+import { useEffect } from "react"
+import { ToolOutputProps } from "."
+import { useTravelPlannerStore } from "../../../store"
+import { TravelItinerary } from "@/api/backend"
 
 type AddDayResult = {
   itineraryId: string
@@ -14,30 +14,35 @@ type AddDayResult = {
 export const AddDayToItineraryOutput = ({
   toolInvocation,
 }: ToolOutputProps) => {
-  const { loadItinerary, updateItinerary } = useTravelPlannerStore();
+  const { loadItinerary, updateItinerary } = useTravelPlannerStore()
 
   // Always call useEffect at the component top level
   // but only perform actions if conditions are met
   useEffect(() => {
     if (
-      toolInvocation.state === "success" && 
-      toolInvocation.result && 
+      toolInvocation.state === "result" &&
+      toolInvocation.result &&
       typeof toolInvocation.result === "object"
     ) {
-      const result = toolInvocation.result as AddDayResult;
-      
+      const result = toolInvocation.result as AddDayResult
+
       // If we have the full itinerary in the result, update it directly
       if (result.itinerary) {
-        updateItinerary(result.itinerary);
+        updateItinerary(result.itinerary)
       } else if (result.itineraryId) {
         // Otherwise load from API
-        loadItinerary();
+        loadItinerary()
       }
     }
-  }, [toolInvocation.state, toolInvocation.result, loadItinerary, updateItinerary]);
+  }, [
+    toolInvocation.state,
+    toolInvocation.result,
+    loadItinerary,
+    updateItinerary,
+  ])
 
   // Handle loading state
-  if (toolInvocation.state === "loading") {
+  if (toolInvocation.state === "call") {
     return (
       <div className="bg-white border border-gray-200 rounded-lg p-4 my-2">
         <div className="flex items-start">
@@ -137,8 +142,9 @@ export const AddDayToItineraryOutput = ({
               Day was not added to itinerary
             </h3>
             <div className="mt-1 text-sm text-gray-600">
-              We couldn't add a day to your itinerary. The itinerary may not exist
-              or may have reached its maximum length.
+              {
+                "We couldn't add a day to your itinerary. The itinerary may not exist or may have reached its maximum length."
+              }
             </div>
           </div>
         </div>
@@ -148,12 +154,12 @@ export const AddDayToItineraryOutput = ({
 
   // Handle button click to view the itinerary
   const handleViewItinerary = () => {
-    loadItinerary();
-    
+    loadItinerary()
+
     // Scroll to the itinerary viewer
-    const viewer = document.getElementById('travel-itinerary-viewer');
+    const viewer = document.getElementById("travel-itinerary-viewer")
     if (viewer) {
-      viewer.scrollIntoView({ behavior: 'smooth' });
+      viewer.scrollIntoView({ behavior: "smooth" })
     }
   }
 

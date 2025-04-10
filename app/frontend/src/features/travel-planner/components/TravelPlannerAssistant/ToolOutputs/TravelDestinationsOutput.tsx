@@ -131,10 +131,13 @@ export const TravelDestinationsOutput = ({
           </svg>
         </div>
         <div className="ml-3">
-          <h3 className="text-base font-medium text-gray-900">Travel Destinations</h3>
+          <h3 className="text-base font-medium text-gray-900">
+            Travel Destinations
+          </h3>
           <div className="mt-1 text-sm text-gray-600">
-            ✨ Choose one of these destinations and tell me how many days you'd
-            like to spend there to create your itinerary!
+            {
+              "✨ Choose one of these destinations and tell me how many days you'd like to spend there to create your itinerary!"
+            }
           </div>
         </div>
       </div>
@@ -171,7 +174,7 @@ export const TravelDestinationsOutput = ({
             {/* Quick selection button */}
             <div className="mt-2 text-right">
               <span className="inline-block text-xs text-gray-500 italic">
-                Try typing: "{destination.name} for 5 days"
+                Try typing: {destination.name} for 5 days
               </span>
             </div>
           </div>

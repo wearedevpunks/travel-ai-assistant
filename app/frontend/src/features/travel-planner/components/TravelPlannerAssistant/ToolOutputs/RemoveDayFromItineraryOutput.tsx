@@ -142,8 +142,9 @@ export const RemoveDayFromItineraryOutput = ({
               Day was not removed from itinerary
             </h3>
             <div className="mt-1 text-sm text-gray-600">
-              We couldn't remove the day from your itinerary. The itinerary or day
-              may not exist.
+              {
+                "We couldn't remove the day from your itinerary. The itinerary or day may not exist."
+              }
             </div>
           </div>
         </div>

@@ -1,11 +1,6 @@
 "use client"
 
 import { ToolOutputProps } from "."
-import {
-  LoadingOperationOutput,
-  ErrorOperationOutput,
-  SuccessOperationOutput
-} from "@/components/operations"
 
 // Define the type for the WhatsApp result data
 interface WhatsAppShareResult {
@@ -117,7 +112,8 @@ export const WhatsAppShareOutput = ({ toolInvocation }: ToolOutputProps) => {
               Failed to send itinerary via WhatsApp
             </h3>
             <div className="mt-1 text-sm text-gray-600">
-              {result?.message || "Unable to send the itinerary. Please try again."}
+              {result?.message ||
+                "Unable to send the itinerary. Please try again."}
             </div>
           </div>
         </div>

@@ -1,6 +1,20 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { SpeechCreateParams } from "openai/resources/audio/speech"
 
+export class TravelPlannerTheme {
+  @ApiProperty({
+    description: "The primary color for the theme",
+    example: "#4F46E5",
+  })
+  primaryColor: string
+
+  @ApiProperty({
+    description: "A dynamic claim to add in the UI",
+    example: "Explore the world with us!",
+  })
+  claim: string
+}
+
 export class TravelDestination {
   @ApiProperty({ description: "The unique identifier for the destination" })
   id: string

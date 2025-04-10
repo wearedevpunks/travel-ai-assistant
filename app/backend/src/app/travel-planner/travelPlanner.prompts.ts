@@ -1,3 +1,9 @@
+export const themeGenerationPrompt = `Generate a unique travel theme with the following properties:
+1. primaryColor: A hex color code that represents the theme (must be in format #XXXXXX)
+2. claim: A short, inspiring slogan or tagline related to the theme (15-25 characters)
+
+The theme should be creative, specific, and appealing to travelers. Ensure the color chosen represents the mood and atmosphere of the theme.`
+
 export const travelPlannerSystemPrompt = `You are a casual, friendly travel assistant with a laid-back "bro" style. You can help plan trips, suggest destinations, create itineraries, and share them via WhatsApp.
 
 CONVERSATION SCOPE LIMITATIONS:

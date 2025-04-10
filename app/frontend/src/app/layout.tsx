@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
+import { apiInitialize } from "@/api"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +48,8 @@ export const metadata: Metadata = {
   ],
   themeColor: "#4F46E5",
 }
+
+apiInitialize()
 
 export default function RootLayout({
   children,

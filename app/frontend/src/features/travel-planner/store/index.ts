@@ -1,6 +1,5 @@
 import { create } from "zustand"
-import { TravelItinerary } from "@/api/backend"
-import { backendApi } from "@/api"
+import { TravelItinerary, travelPlannerItineraryGet } from "@/api/backend"
 
 // Define the store state interface
 interface TravelPlannerState {
@@ -57,10 +56,11 @@ export const useTravelPlannerStore = create<TravelPlannerState>((set, get) => ({
     try {
       // Load the itinerary data
       console.log("Fetching itinerary with ID:", currentItineraryId)
-      const itinerary =
-        await backendApi.travelPlanner.travelPlannerItineraryGet(
-          currentItineraryId
-        )
+      const { data: itinerary } = await travelPlannerItineraryGet({
+        path: {
+          id: currentItineraryId,
+        },
+      })
       console.log("Itinerary data received:", itinerary)
       set({ itinerary })
     } catch (error) {

@@ -29,14 +29,19 @@ import {
   TravelAssistantSpeechToTextRequest,
   TravelAssistantSpeechToTextResponse,
   TravelAssistantTextToSpeechRequest,
+  TravelPlannerTheme,
 } from "./travelPlanner.dto"
 import { TravelItinerariesService } from "@/features/travel-itineraries/services/itineraries"
-import { travelPlannerSystemPrompt } from "./travelPlanner.prompts"
-import { CoreMessage, streamText } from "ai"
+import { CoreMessage, streamText, generateObject } from "ai"
 import { createOpenAI } from "@ai-sdk/openai"
 import { Settings } from "@/settings"
 import { AiOpenaiSpeechService } from "@/integrations/ai/openai/services/speech"
 import { executeStreamedCompletionAndStream } from "@/integrations/ai/vercel/utils"
+import {
+  travelPlannerSystemPrompt,
+  themeGenerationPrompt,
+} from "./travelPlanner.prompts"
+import { z } from "zod"
 
 @ApiTags("Travel Planner")
 @Controller("v1/travel-planner")
@@ -47,6 +52,34 @@ export class TravelPlannerController {
   ) {
     // Inject itinerary service into the tools
     setTravelItinerariesService(this.itinerariesService)
+  }
+
+  @Get("random-theme")
+  @ApiOperation({
+    operationId: "travelPlannerRandomTheme",
+    summary: "Generate a random travel theme",
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "Returns a random travel theme",
+    type: TravelPlannerTheme,
+  })
+  async generateRandomTheme(): Promise<TravelPlannerTheme> {
+    const openai = createOpenAI({
+      compatibility: "strict",
+      apiKey: Settings.getOpenAiApiKey(),
+    })
+
+    const { object: theme } = await generateObject<TravelPlannerTheme>({
+      model: openai("gpt-4o-mini"),
+      schema: z.object({
+        primaryColor: z.string(),
+        claim: z.string(),
+      }),
+      prompt: themeGenerationPrompt,
+    })
+
+    return theme
   }
 
   @Post("chat")

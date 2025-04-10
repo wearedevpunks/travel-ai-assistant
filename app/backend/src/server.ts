@@ -90,6 +90,10 @@ export const setupServer = async (app: INestApplication) => {
 
     await app.init()
 
+    app.enableCors({
+      origin: "*",
+    })
+
     return {
       success: true,
     }

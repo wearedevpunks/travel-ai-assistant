@@ -90,6 +90,9 @@ export const setupServer = async (app: INestApplication) => {
 
     app.enableCors({
       origin: "*",
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+      credentials: true,
     })
     await app.init()
 

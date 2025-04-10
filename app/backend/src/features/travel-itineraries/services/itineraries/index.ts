@@ -18,8 +18,8 @@ import {
   ItineraryShareResult,
 } from "./handlers/itinerary-share-handler"
 
-import { TravelItinerariesRepository } from "../../../../collections/mocked/repositories/itineraries.repository"
-import { TravelDestinationsRepository } from "../../../../collections/mocked/repositories/destinations.repository"
+import { TravelItinerariesRepository } from "../../../../collections/redis/repositories/itineraries.repository"
+import { TravelDestinationsRepository } from "../../../../collections/redis/repositories/destinations.repository"
 
 @Injectable()
 export class TravelItinerariesService {

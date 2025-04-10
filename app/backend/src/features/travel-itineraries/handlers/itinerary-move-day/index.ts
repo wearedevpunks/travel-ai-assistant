@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common"
 import { ItineraryMoveDayInput, ItineraryMoveDayOutput } from "./types"
 
-import { TravelItinerariesRepository } from "../../../../collections/mocked/repositories/itineraries.repository"
+import { TravelItinerariesRepository } from "../../../../collections/redis/repositories/itineraries.repository"
 import { Log } from "@punks/backend-core"
 
 @Injectable()

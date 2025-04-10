@@ -1,14 +1,31 @@
 import { Injectable, OnModuleInit } from "@nestjs/common"
 import { TravelDestination } from "../entities/destination.entity"
 import { newUuid } from "@punks/backend-core"
+import Redis from "ioredis"
+import { Settings } from "../../../settings"
 
 @Injectable()
 export class TravelDestinationsRepository implements OnModuleInit {
-  private destinations: Map<string, TravelDestination> = new Map()
+  private readonly redis: Redis
+  private readonly destinationsKey = "destinations"
+  private destinations: TravelDestination[] = []
+
+  constructor() {
+    this.redis = new Redis(Settings.getRedisUrl())
+  }
 
   // Initialize with mock data on module initialization
-  onModuleInit() {
-    this.initializeMockDestinations()
+  async onModuleInit() {
+    // Try to load destinations from Redis first
+    const storedDestinations = await this.redis.get(this.destinationsKey)
+    
+    if (storedDestinations) {
+      this.destinations = JSON.parse(storedDestinations)
+    } else {
+      // If no destinations found in Redis, create and store mock data
+      this.initializeMockDestinations()
+      await this.redis.set(this.destinationsKey, JSON.stringify(this.destinations))
+    }
   }
 
   private initializeMockDestinations() {
@@ -297,6 +314,8 @@ export class TravelDestinationsRepository implements OnModuleInit {
       ],
     }
 
+    let count = 0
+
     // Generate 100 destination entries
     for (const continent of continents) {
       const countries = countriesByContinent[continent]
@@ -314,37 +333,47 @@ export class TravelDestinationsRepository implements OnModuleInit {
             description: `${city} is a beautiful destination in ${country}, ${continent}.`,
           }
 
-          this.destinations.set(id, destination)
-
+          this.destinations.push(destination)
+          count++
+          
           // Stop if we've added 100 destinations
-          if (this.destinations.size >= 100) {
-            return
+          if (count >= 100) {
+            break
           }
         }
+        
+        if (count >= 100) {
+          break
+        }
+      }
+      
+      if (count >= 100) {
+        break
       }
     }
   }
 
   async getAll(continent?: string): Promise<TravelDestination[]> {
-    let destinations = Array.from(this.destinations.values())
-
-    if (continent) {
-      destinations = destinations.filter(
-        (dest) => dest.continent.toLowerCase() === continent.toLowerCase()
-      )
+    if (!continent) {
+      return this.destinations
     }
-
-    return destinations
+    
+    // Filter by continent (case insensitive)
+    const lowercaseContinent = continent.toLowerCase()
+    return this.destinations.filter(
+      dest => dest.continent.toLowerCase() === lowercaseContinent
+    )
   }
 
   async get(id: string): Promise<TravelDestination | undefined> {
-    return this.destinations.get(id)
+    return this.destinations.find(dest => dest.id === id)
   }
 
   async search(name: string): Promise<TravelDestination[]> {
-    const destinations = Array.from(this.destinations.values())
-    return destinations.filter((dest) =>
-      dest.name.toLowerCase().includes(name.toLowerCase())
+    // Filter by name (case insensitive)
+    const lowercaseName = name.toLowerCase()
+    return this.destinations.filter(dest => 
+      dest.name.toLowerCase().includes(lowercaseName)
     )
   }
 }

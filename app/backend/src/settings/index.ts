@@ -25,4 +25,5 @@ export const Settings = {
   getTwilioAccountSid: () => getEnvVariable("TWILIO_ACCOUNT_SID"),
   getTwilioAuthToken: () => getEnvVariable("TWILIO_AUTH_TOKEN"),
   getTwilioWhatsAppFrom: () => getEnvVariable("TWILIO_WHATSAPP_FROM"),
+  getRedisUrl: () => getRequiredEnvVariable("REDIS_URL"),
 }

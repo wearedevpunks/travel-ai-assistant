@@ -1,3 +1,3 @@
-import { MockedCollectionsModule } from "./mocked"
+import { RedisCollectionsModule } from "./redis"
 
-export const CollectionModules = [MockedCollectionsModule]
+export const CollectionModules = [RedisCollectionsModule]

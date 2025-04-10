@@ -5,9 +5,9 @@ import {
 } from "./types"
 
 import { searchPexelPicture } from "../../../../integrations/pictures/pexels"
-import { TravelDestination } from "../../../../collections/mocked/entities/destination.entity"
-import { TravelItinerariesRepository } from "../../../../collections/mocked/repositories/itineraries.repository"
-import { TravelDestinationsRepository } from "../../../../collections/mocked/repositories/destinations.repository"
+import { TravelDestination } from "../../../../collections/redis/entities/destination.entity"
+import { TravelItinerariesRepository } from "../../../../collections/redis/repositories/itineraries.repository"
+import { TravelDestinationsRepository } from "../../../../collections/redis/repositories/destinations.repository"
 import { Log } from "@punks/backend-core"
 
 @Injectable()

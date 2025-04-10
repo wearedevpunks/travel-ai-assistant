@@ -10,7 +10,6 @@ import {
 } from "@nestjs/common"
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger"
 import { Response } from "express"
-import { executeStreamedCompletionAndStream } from "@/integrations/ai/vercel/utils/response"
 import {
   executeStreamedSpeechAndStream,
   executeSpeechToTextAndReturn,
@@ -37,6 +36,7 @@ import { CoreMessage, streamText } from "ai"
 import { createOpenAI } from "@ai-sdk/openai"
 import { Settings } from "@/settings"
 import { AiOpenaiSpeechService } from "@/integrations/ai/openai/services/speech"
+import { executeStreamedCompletionAndStream } from "@/integrations/ai/vercel/utils"
 
 @ApiTags("Travel Planner")
 @Controller("v1/travel-planner")

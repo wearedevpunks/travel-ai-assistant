@@ -1,7 +1,6 @@
 "use client"
 
-import { TravelDestination, TravelItinerary } from "@/api/backend"
-import { TravelPlannerStore } from "@/features/travel-planner/store"
+import { TravelItinerary, TravelItineraryDestination } from "@/api/backend"
 
 // Define the exact ToolCall type
 export interface ToolCall {
@@ -18,7 +17,7 @@ export interface ToolSuccessCallbackProps {
     state: string
   }
   result: any
-  store: TravelPlannerStore
+  store: any // TravelPlannerStore
 }
 
 // Define the base callback interface for error callbacks
@@ -29,7 +28,7 @@ export interface ToolErrorCallbackProps {
     state: string
   }
   error: any
-  store: TravelPlannerStore
+  store: any // TravelPlannerStore
 }
 
 // Define the type for a tool callback functions
@@ -50,7 +49,7 @@ export interface ModifyItineraryResult {
 }
 
 export interface DestinationsResult {
-  destinations: TravelDestination[]
+  destinations: TravelItineraryDestination[]
 }
 
 export interface WeatherResult {

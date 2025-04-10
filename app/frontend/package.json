@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "api:codegen": "openapi-ts -i ../backend/api-spec.json -o src/api/backend -c @hey-api/client-fetch"
   },
   "dependencies": {

@@ -20,7 +20,7 @@ export const DestinationHeader = ({ destination }: DestinationHeaderProps) => {
           />
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-          
+
           {/* Destination name overlay */}
           <div className="absolute bottom-0 left-0 right-0 p-4">
             <h3 className="text-white text-xl font-bold">{destination.name}</h3>
@@ -28,7 +28,7 @@ export const DestinationHeader = ({ destination }: DestinationHeaderProps) => {
               {destination.country}, {destination.continent}
             </p>
           </div>
-          
+
           {/* Photo attribution if available */}
           {destination.picture.photographer && (
             <div className="absolute bottom-1 right-2 text-xs text-white opacity-70">
@@ -37,11 +37,13 @@ export const DestinationHeader = ({ destination }: DestinationHeaderProps) => {
           )}
         </div>
       )}
-      
+
       {/* If no image is available, show a text-only header */}
       {!destination?.picture?.url && (
         <div className="px-4 pt-4">
-          <Title variant="h4" className="text-lg">{destination?.name || "Your Destination"}</Title>
+          <Title variant="h4" className="text-lg">
+            {destination?.name || "Your Destination"}
+          </Title>
           <p className="text-gray-600 text-sm">
             {destination
               ? `${destination.country}, ${destination.continent}`
@@ -49,11 +51,11 @@ export const DestinationHeader = ({ destination }: DestinationHeaderProps) => {
           </p>
         </div>
       )}
-      
+
       {/* Description - shown regardless of whether there's an image */}
-      {destination?.description && (
+      {destination?.name && (
         <p className="text-gray-700 text-sm px-4 pt-3 line-clamp-3 hover:line-clamp-none transition-all">
-          {destination.description}
+          {destination.name}
         </p>
       )}
     </div>

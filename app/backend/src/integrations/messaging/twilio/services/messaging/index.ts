@@ -1,4 +1,4 @@
-import { Settings } from "@/settings"
+import { Settings } from "../../../../../settings"
 import { Injectable, Logger } from "@nestjs/common"
 import { Twilio } from "twilio"
 

@@ -1,4 +1,4 @@
-import { SharedModule } from "@/shared/module"
+import { SharedModule } from "../../../shared/module"
 import { Module } from "@nestjs/common"
 import { TwilioServices } from "./services"
 

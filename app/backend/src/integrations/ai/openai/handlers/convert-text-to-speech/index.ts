@@ -3,7 +3,7 @@ import { AiOpenaiTextToSpeechServiceStreamedSpeech } from "./types"
 import { Log } from "@punks/backend-core"
 import { Readable } from "stream"
 import OpenAI from "openai"
-import { Settings } from "@/settings"
+import { Settings } from "../../../../../settings"
 
 @Injectable()
 export class OpenaiTextToSpeechHandler {

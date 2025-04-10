@@ -1,5 +1,5 @@
 // Mock the external modules that the handlers depend on
-import { TravelDestination } from "@/collections/mocked/entities/destination.entity"
+import { TravelDestination } from "../../../../../collections/mocked/entities/destination.entity"
 
 // Mock @/integrations/pictures/pexels module
 jest.mock("@/integrations/pictures/pexels", () => ({

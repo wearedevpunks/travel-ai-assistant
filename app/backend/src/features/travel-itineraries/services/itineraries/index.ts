@@ -12,14 +12,14 @@ import { ItineraryAddActivityInput } from "../../handlers/itinerary-add-activity
 import { ItineraryAddDayInput } from "../../handlers/itinerary-add-day/types"
 import { ItineraryRemoveDayInput } from "../../handlers/itinerary-remove-day/types"
 import { ItineraryMoveDayInput } from "../../handlers/itinerary-move-day/types"
-import { 
-  ItineraryShareHandler, 
-  ItineraryShareOptions, 
-  ItineraryShareResult 
+import {
+  ItineraryShareHandler,
+  ItineraryShareOptions,
+  ItineraryShareResult,
 } from "./handlers/itinerary-share-handler"
 
-import { TravelItinerariesRepository } from "@/collections/mocked/repositories/itineraries.repository"
-import { TravelDestinationsRepository } from "@/collections/mocked/repositories/destinations.repository"
+import { TravelItinerariesRepository } from "../../../../collections/mocked/repositories/itineraries.repository"
+import { TravelDestinationsRepository } from "../../../../collections/mocked/repositories/destinations.repository"
 
 @Injectable()
 export class TravelItinerariesService {
@@ -75,7 +75,9 @@ export class TravelItinerariesService {
    * @param options The share options including itinerary ID and phone number
    * @returns Result of the share operation
    */
-  async shareItineraryViaWhatsApp(options: ItineraryShareOptions): Promise<ItineraryShareResult> {
+  async shareItineraryViaWhatsApp(
+    options: ItineraryShareOptions
+  ): Promise<ItineraryShareResult> {
     return await this.itineraryShareHandler.shareItineraryViaWhatsApp(options)
   }
 }

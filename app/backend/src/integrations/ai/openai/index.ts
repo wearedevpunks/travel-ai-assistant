@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common"
 import { AiOpenaiServices } from "./services"
-import { SharedModule } from "@/shared/module"
+import { SharedModule } from "../../../shared/module"
 import { OpenaiAiHandlers } from "./handlers"
 
 @Module({

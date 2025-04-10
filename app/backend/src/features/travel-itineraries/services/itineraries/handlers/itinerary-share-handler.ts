@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common"
-import { TwilioMessagingService } from "@/integrations/messaging/twilio/services/messaging"
-import { TravelItinerariesRepository } from "@/collections/mocked/repositories/itineraries.repository"
+import { TwilioMessagingService } from "../../../../../integrations/messaging/twilio/services/messaging"
+import { TravelItinerariesRepository } from "../../../../../collections/mocked/repositories/itineraries.repository"
 
 export interface ItineraryShareOptions {
   itineraryId: string

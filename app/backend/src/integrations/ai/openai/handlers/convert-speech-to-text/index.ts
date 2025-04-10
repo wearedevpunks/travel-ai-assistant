@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common"
 import { AiOpenaiSpeechToTextServiceStreamedSpeech } from "./types"
 import { Log } from "@punks/backend-core"
 import OpenAI from "openai"
-import { Settings } from "@/settings"
+import { Settings } from "../../../../../settings"
 
 @Injectable()
 export class OpenaiSpeechToTextHandler {

@@ -1,4 +1,4 @@
-import { Settings } from "@/settings"
+import { Settings } from "../../../settings"
 
 export const searchPexelPicture = async (query: string) => {
   const response = await fetch(

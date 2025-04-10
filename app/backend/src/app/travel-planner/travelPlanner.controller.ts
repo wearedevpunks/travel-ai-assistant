@@ -13,7 +13,7 @@ import { Response } from "express"
 import {
   executeStreamedSpeechAndStream,
   executeSpeechToTextAndReturn,
-} from "@/integrations/ai/openai/utils/response"
+} from "../../integrations/ai/openai/utils/response"
 import {
   addDayToItinerary,
   addItemToItinerary,
@@ -31,12 +31,12 @@ import {
   TravelAssistantTextToSpeechRequest,
   TravelPlannerTheme,
 } from "./travelPlanner.dto"
-import { TravelItinerariesService } from "@/features/travel-itineraries/services/itineraries"
+import { TravelItinerariesService } from "../../features/travel-itineraries/services/itineraries"
 import { CoreMessage, streamText, generateObject } from "ai"
 import { createOpenAI } from "@ai-sdk/openai"
-import { Settings } from "@/settings"
-import { AiOpenaiSpeechService } from "@/integrations/ai/openai/services/speech"
-import { executeStreamedCompletionAndStream } from "@/integrations/ai/vercel/utils"
+import { Settings } from "../../settings"
+import { AiOpenaiSpeechService } from "../../integrations/ai/openai/services/speech"
+import { executeStreamedCompletionAndStream } from "../../integrations/ai/vercel/utils"
 import {
   travelPlannerSystemPrompt,
   themeGenerationPrompt,

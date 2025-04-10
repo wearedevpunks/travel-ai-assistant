@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { tool } from "ai"
 
-import { TravelItinerariesService } from "@/features/travel-itineraries/services/itineraries"
+import { TravelItinerariesService } from "../../features/travel-itineraries/services/itineraries"
 import { estimateActivityHours } from "./travelPlanner.utils"
 import { Log } from "@punks/backend-core"
 

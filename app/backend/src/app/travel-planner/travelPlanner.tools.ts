@@ -47,12 +47,12 @@ export const getTravelDestinations = tool({
 
 export const createTravelItinerary = tool({
   description:
-    "Creates a travel itinerary for a given destination with empty days. You can provide either a destination name or a destination ID.",
+    "Creates a travel itinerary for a given destination with empty days. You must provide a destination name and the number of days.",
   parameters: z.object({
     destinationName: z
       .string()
       .describe(
-        "The name of the destination (city or country) for this itinerary. Either destinationId or destinationName must be provided."
+        "The name of the destination (city or country) for this itinerary."
       ),
     numberOfDays: z
       .number()

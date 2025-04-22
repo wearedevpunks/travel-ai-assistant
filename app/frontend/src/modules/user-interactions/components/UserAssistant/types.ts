@@ -5,6 +5,9 @@ export interface AIMessageType {
   content: string
   parts?: AIMessagePart[]
   toolInvocations?: ToolInvocation[]
+  metadata?: {
+    skipTTS?: boolean
+  }
 }
 
 // Message part types

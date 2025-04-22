@@ -18,6 +18,9 @@ export const toolCallbacks: Record<string, ToolCallbacks> = {
   
   // Itinerary sharing tools
   sendItineraryViaWhatsApp: shareItineraryCallbacks,
+  
+  // Travel destinations tool
+  getTravelDestinations: createTravelItineraryCallbacks,
 }
 
 // Export the types

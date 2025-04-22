@@ -30,7 +30,7 @@ interface ChatPanelProps<T extends ChatMessageData = ChatMessageData> {
   onSubmit: (e: React.FormEvent) => void
   isSubmitting?: boolean
   error?: string | null
-  emptyStateMessage?: string
+  emptyStateMessage?: ReactNode
   renderMessageActions?: (message: T) => ReactNode
   renderMessageContent?: (message: T) => ReactNode
   renderExtraContent?: (message: T) => ReactNode
@@ -47,7 +47,7 @@ export function ChatPanel<T extends ChatMessageData>({
   onSubmit,
   isSubmitting = false,
   error,
-  emptyStateMessage = "Start a conversation",
+  emptyStateMessage,
   renderMessageActions,
   renderMessageContent,
   renderExtraContent,
@@ -135,7 +135,7 @@ export function ChatPanel<T extends ChatMessageData>({
           <ChatInputForm
             ref={(inputFormRef) => {
               // Store the ref for later use if needed
-              (window as any).__chatInputFormRef = inputFormRef;
+              ;(window as any).__chatInputFormRef = inputFormRef
             }}
             value={inputValue}
             onChange={onInputChange}

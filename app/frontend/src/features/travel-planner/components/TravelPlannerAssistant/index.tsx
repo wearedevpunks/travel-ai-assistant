@@ -15,7 +15,8 @@ import {
 
 // Render message actions (like TextToSpeech for assistant messages)
 const renderMessageActions = (message: AIMessageType) => {
-  if (message.role === "assistant" && message.content) {
+  // Skip text-to-speech for messages with skipTTS metadata flag
+  if (message.role === "assistant" && message.content && !message.metadata?.skipTTS) {
     return (
       <TextToSpeech
         text={message.content}
@@ -151,6 +152,7 @@ export const TravelPlannerAssistant = () => {
 
   return (
     <UserAssistant
+      initialUserMessage="Hi, I'm a travel planner assistant, I can help you plan your trip to a destination. You can ask me to show you the available destinations, create a trip, add an activity to a day, or move a day in the itinerary."
       chatEndpoint={buildBackendUrl("/v1/travel-planner/chat")}
       ttsEndpoint={buildBackendUrl("/v1/travel-planner/tts")}
       sttEndpoint={buildBackendUrl("/v1/travel-planner/stt")}

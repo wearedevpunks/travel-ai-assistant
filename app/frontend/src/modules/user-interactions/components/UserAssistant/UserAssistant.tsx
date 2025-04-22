@@ -13,6 +13,7 @@ const isSystemRole = (role: string) => {
 
 export interface UserAssistantProps {
   initialSystemMessage?: string
+  initialUserMessage?: string
   renderMessageActions?: (message: AIMessageType) => ReactNode
   renderExtraContent?: (message: AIMessageType) => ReactNode
   renderMessageContent?: (message: AIMessageType) => ReactNode
@@ -30,6 +31,7 @@ export interface UserAssistantProps {
 
 export const UserAssistant = ({
   initialSystemMessage,
+  initialUserMessage,
   renderMessageActions,
   renderExtraContent,
   renderMessageContent,
@@ -47,15 +49,26 @@ export const UserAssistant = ({
   // Chat functionality using AI SDK
   const { messages, input, handleInputChange, handleSubmit, status } = useChat({
     api: chatEndpoint,
-    initialMessages: initialSystemMessage
-      ? [
-          {
-            id: "system-1",
-            role: "system",
-            content: initialSystemMessage,
-          },
-        ]
-      : [],
+    initialMessages: [
+      ...(initialSystemMessage
+        ? [
+            {
+              id: "system-1",
+              role: "system" as const,
+              content: initialSystemMessage,
+            },
+          ]
+        : []),
+      ...(initialUserMessage
+        ? [
+            {
+              id: "assistant-1",
+              role: "assistant" as const,
+              content: initialUserMessage,
+            },
+          ]
+        : []),
+    ],
     onResponse: (response) => {
       console.log("Chat response:", response)
       onMessageResponse?.(response)
@@ -86,15 +99,15 @@ export const UserAssistant = ({
     }
 
     console.log("Sending message:", inputValue)
-    
+
     // Create a custom event to mimic the handleInputChange
     const inputEvent = {
-      target: { value: inputValue }
-    } as React.ChangeEvent<HTMLInputElement>;
-    
+      target: { value: inputValue },
+    } as React.ChangeEvent<HTMLInputElement>
+
     // First update the input value in the AI SDK
-    handleInputChange(inputEvent);
-    
+    handleInputChange(inputEvent)
+
     // Then submit the form
     handleSubmit(e)
     setInputValue("")
@@ -102,17 +115,24 @@ export const UserAssistant = ({
 
   // Create adapter between AI messages and the generic ChatMessageData
   const adaptMessagesToGeneric = () => {
-    return messages
-      .filter((msg) => !isSystemRole(msg.role))
-      .map(
-        (msg) =>
-          ({
-            ...msg,
-            contentType: msg.role === "assistant" ? "markdown" : "text",
-            metadata: { parts: msg.parts },
-            role: msg.role,
-          } as ChatMessageData)
-      )
+    return [...messages]
+      .filter((msg) => msg && !isSystemRole(msg.role))
+      .map((msg) => {
+        // Check if this is the initial intro message (has id assistant-1)
+        const isIntroMessage =
+          msg.id === "assistant-1" && msg.role === "assistant"
+
+        return {
+          ...msg,
+          contentType: msg!.role === "assistant" ? "markdown" : "text",
+          metadata: {
+            parts: msg!.parts,
+            // Mark intro message to skip text-to-speech
+            skipTTS: isIntroMessage ? true : false,
+          },
+          role: msg!.role,
+        } as ChatMessageData
+      })
   }
 
   // Create the message actions renderer
@@ -128,15 +148,17 @@ export const UserAssistant = ({
       inputValue={inputValue}
       onInputChange={(value) => {
         // Update local state
-        setInputValue(value);
-        
+        setInputValue(value)
+
         // Also update AI SDK's input state
-        const event = { target: { value } } as React.ChangeEvent<HTMLInputElement>;
-        handleInputChange(event);
+        const event = {
+          target: { value },
+        } as React.ChangeEvent<HTMLInputElement>
+        handleInputChange(event)
       }}
       onInputValueChange={(e) => {
         // This is called directly from the input element's onChange
-        handleInputChange(e as any);
+        handleInputChange(e as any)
       }}
       onSubmit={handleFormSubmit}
       isSubmitting={status === "streaming"}

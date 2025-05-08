@@ -85,7 +85,7 @@ This project is designed to inspire developers and product teams to rethink how 
   - **Deployment Note:** To deploy NestJS on Vercel, a `vercel.json` file is included in the project. This file configures the Vercel Node adapter and sets up routing so that the NestJS server runs correctly in the Vercel serverless environment.
 
 - **Persistence**
-  - Uses Vercel Redis extension
+  - Uses [Vercel Redis extension](https://vercel.com/marketplace/category/storage?category=storage&search=redis)
   - Stores itineraries and related data for fast, scalable access
 
 **Schematic Overview:**

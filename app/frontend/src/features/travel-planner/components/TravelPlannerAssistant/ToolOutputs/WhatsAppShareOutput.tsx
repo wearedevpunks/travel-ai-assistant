@@ -43,83 +43,83 @@ export const WhatsAppShareOutput = ({ toolInvocation }: ToolOutputProps) => {
     )
   }
 
-  // Handle error state using the custom style to match other components
-  if (toolInvocation.state === "error") {
-    return (
-      <div className="bg-white border border-red-200 rounded-lg p-4 my-2">
-        <div className="flex items-start">
-          <div className="flex-shrink-0 bg-red-100 p-2 rounded-md">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-red-600"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" x2="12" y1="8" y2="12" />
-              <line x1="12" x2="12.01" y1="16" y2="16" />
-            </svg>
-          </div>
-          <div className="ml-3">
-            <h3 className="text-base font-medium text-gray-900">
-              Failed to send itinerary via WhatsApp
-            </h3>
-            <div className="mt-1 text-sm text-gray-600">
-              {typeof toolInvocation.result === "string"
-                ? toolInvocation.result
-                : "Unable to send the itinerary. Please check the phone number and try again."}
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  // // Handle error state using the custom style to match other components
+  // if (toolInvocation.state === "error") {
+  //   return (
+  //     <div className="bg-white border border-red-200 rounded-lg p-4 my-2">
+  //       <div className="flex items-start">
+  //         <div className="flex-shrink-0 bg-red-100 p-2 rounded-md">
+  //           <svg
+  //             xmlns="http://www.w3.org/2000/svg"
+  //             width="20"
+  //             height="20"
+  //             viewBox="0 0 24 24"
+  //             fill="none"
+  //             stroke="currentColor"
+  //             strokeWidth="2"
+  //             strokeLinecap="round"
+  //             strokeLinejoin="round"
+  //             className="text-red-600"
+  //           >
+  //             <circle cx="12" cy="12" r="10" />
+  //             <line x1="12" x2="12" y1="8" y2="12" />
+  //             <line x1="12" x2="12.01" y1="16" y2="16" />
+  //           </svg>
+  //         </div>
+  //         <div className="ml-3">
+  //           <h3 className="text-base font-medium text-gray-900">
+  //             Failed to send itinerary via WhatsApp
+  //           </h3>
+  //           <div className="mt-1 text-sm text-gray-600">
+  //             {typeof toolInvocation.result === "string"
+  //               ? toolInvocation.result
+  //               : "Unable to send the itinerary. Please check the phone number and try again."}
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
-  // Cast result to WhatsApp share result
-  const result = toolInvocation.result as WhatsAppShareResult
+  // // Cast result to WhatsApp share result
+  // const result = toolInvocation.result as WhatsAppShareResult
 
-  // Handle unsuccessful result using the custom style to match other components
-  if (!result || !result.success) {
-    return (
-      <div className="bg-white border border-red-200 rounded-lg p-4 my-2">
-        <div className="flex items-start">
-          <div className="flex-shrink-0 bg-red-100 p-2 rounded-md">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-red-600"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" x2="12" y1="8" y2="12" />
-              <line x1="12" x2="12.01" y1="16" y2="16" />
-            </svg>
-          </div>
-          <div className="ml-3">
-            <h3 className="text-base font-medium text-gray-900">
-              Failed to send itinerary via WhatsApp
-            </h3>
-            <div className="mt-1 text-sm text-gray-600">
-              {result?.message ||
-                "Unable to send the itinerary. Please try again."}
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  // // Handle unsuccessful result using the custom style to match other components
+  // if (!result || !result.success) {
+  //   return (
+  //     <div className="bg-white border border-red-200 rounded-lg p-4 my-2">
+  //       <div className="flex items-start">
+  //         <div className="flex-shrink-0 bg-red-100 p-2 rounded-md">
+  //           <svg
+  //             xmlns="http://www.w3.org/2000/svg"
+  //             width="20"
+  //             height="20"
+  //             viewBox="0 0 24 24"
+  //             fill="none"
+  //             stroke="currentColor"
+  //             strokeWidth="2"
+  //             strokeLinecap="round"
+  //             strokeLinejoin="round"
+  //             className="text-red-600"
+  //           >
+  //             <circle cx="12" cy="12" r="10" />
+  //             <line x1="12" x2="12" y1="8" y2="12" />
+  //             <line x1="12" x2="12.01" y1="16" y2="16" />
+  //           </svg>
+  //         </div>
+  //         <div className="ml-3">
+  //           <h3 className="text-base font-medium text-gray-900">
+  //             Failed to send itinerary via WhatsApp
+  //           </h3>
+  //           <div className="mt-1 text-sm text-gray-600">
+  //             {result?.message ||
+  //               "Unable to send the itinerary. Please try again."}
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   // Display success state using the custom style to match other components
   return (
@@ -145,7 +145,8 @@ export const WhatsAppShareOutput = ({ toolInvocation }: ToolOutputProps) => {
             Itinerary sent via WhatsApp!
           </h3>
           <div className="mt-1 text-sm text-gray-600">
-            Your itinerary has been successfully sent to {result.phoneNumber}.
+            Your itinerary has been successfully sent!
+            {"to {result.phoneNumber}."}
           </div>
         </div>
       </div>

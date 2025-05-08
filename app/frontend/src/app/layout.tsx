@@ -96,13 +96,13 @@ export default async function RootLayout({
           } as React.CSSProperties
         }
       >
-        <header className="py-4 px-6 border-b border-gray-200">
+        <header className="py-4 px-6 border-b border-gray-200 fixed top-0 left-0 w-full bg-white z-50">
           <div className="max-w-7xl mx-auto flex justify-between items-center">
             <h1 className="text-xl font-bold text-primary">TravelPlan AI</h1>
             <p className="text-sm italic">{theme.claim}</p>
           </div>
         </header>
-        <main className="max-w-7xl mx-auto p-6">{children}</main>
+        <main className="max-w-7xl mx-auto">{children}</main>
       </body>
     </html>
   )

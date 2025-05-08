@@ -146,7 +146,7 @@ export const WhatsAppShareOutput = ({ toolInvocation }: ToolOutputProps) => {
           </h3>
           <div className="mt-1 text-sm text-gray-600">
             Your itinerary has been successfully sent!
-            {"to {result.phoneNumber}."}
+            {/* to {result.phoneNumber}.*/}
           </div>
         </div>
       </div>

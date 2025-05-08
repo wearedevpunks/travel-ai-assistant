@@ -71,6 +71,7 @@ This project is designed to inspire developers and product teams to rethink how 
 
 - **Frontend**
 
+  - Built with Next.js
   - Deployed on Vercel
   - Provides the conversational UI
   - Streams responses from the backend
@@ -78,8 +79,10 @@ This project is designed to inspire developers and product teams to rethink how 
 - **Backend**
 
   - Deployed on Vercel
+  - Built with NestJS
   - Exposes APIs powered by Vercel AI SDK and custom tools
   - Handles itinerary logic and user requests
+  - **Deployment Note:** To deploy NestJS on Vercel, a `vercel.json` file is included in the project. This file configures the Vercel Node adapter and sets up routing so that the NestJS server runs correctly in the Vercel serverless environment.
 
 - **Persistence**
   - Uses Vercel Redis extension

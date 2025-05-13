@@ -1,5 +1,6 @@
-import { Settings } from "../../../../../settings"
 import { Injectable, Logger } from "@nestjs/common"
+import { Settings } from "../../../../../settings"
+import { ensurePrefix } from "../../../../../utils/strings"
 import { Twilio } from "twilio"
 
 interface WhatsAppMessageOptions {
@@ -20,21 +21,22 @@ export class TwilioMessagingService {
   async sendWhatsAppMessage(options: WhatsAppMessageOptions): Promise<string> {
     try {
       // Format the to number if it doesn't already have the whatsapp: prefix
-      const toNumber = options.to.startsWith("whatsapp:")
-        ? options.to
-        : `whatsapp:${options.to}`
-
+      const toNumber = options.to
       // Use provided from number or default
       const defaultFromNumber = `${Settings.getTwilioWhatsAppFrom()}`
       const fromNumber = options.from || defaultFromNumber
 
-      this.logger.log(`Sending WhatsApp message to ${toNumber}`)
+      this.logger.log(`Sending WhatsApp message to ${toNumber}`, {
+        body: options.body,
+        from: ensurePrefix(fromNumber, "whatsapp:"),
+        to: ensurePrefix(toNumber, "whatsapp:"),
+      })
 
       const client = this.getClient()
       const message = await client.messages.create({
         body: options.body,
-        from: fromNumber,
-        to: toNumber,
+        from: ensurePrefix(fromNumber, "whatsapp:"),
+        to: ensurePrefix(toNumber, "whatsapp:"),
       })
 
       this.logger.log(`WhatsApp message sent successfully: ${message.sid}`)

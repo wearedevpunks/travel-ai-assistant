@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { TextToSpeechControls } from "@/components/molecules/TextToSpeechControls"
 import { SpeechButtonState } from "@/components/atoms/SpeechButton"
 import { VoiceOption } from "@/components/atoms/VoiceSelector"
+import { useTTSPlayer } from "./TTSPlayerContext"
 
 export interface TextToSpeechProps {
   text: string
@@ -25,6 +26,7 @@ export function TextToSpeech({
   const audioUrlRef = useRef<string | null>(null)
   const previousTextRef = useRef("")
   const speakTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const { playAudio, stopCurrentAudio } = useTTSPlayer()
 
   // Clean up resources when component unmounts
   useEffect(() => {
@@ -39,9 +41,10 @@ export function TextToSpeech({
 
       if (audioRef.current) {
         audioRef.current.pause()
+        stopCurrentAudio()
       }
     }
-  }, [])
+  }, [stopCurrentAudio])
 
   // Handle text changes with debounce
   useEffect(() => {
@@ -115,18 +118,25 @@ export function TextToSpeech({
 
       audioUrlRef.current = URL.createObjectURL(audioBlob)
 
+      // Stop any currently playing audio globally (via context)
+      stopCurrentAudio()
+
       // Create and play the audio
       const audio = new Audio(audioUrlRef.current)
       audioRef.current = audio
+      playAudio(audio)
 
       // Set up event listeners
       audio.addEventListener("ended", () => {
         setIsPlaying(false)
+        // Only clear if this audio is the one managed by context
+        stopCurrentAudio()
       })
 
       audio.addEventListener("error", () => {
         setIsPlaying(false)
         setError("Audio playback failed")
+        stopCurrentAudio()
       })
 
       // Play the audio
@@ -146,6 +156,7 @@ export function TextToSpeech({
     if (audioRef.current) {
       audioRef.current.pause()
       audioRef.current.currentTime = 0
+      stopCurrentAudio()
     }
     setIsPlaying(false)
   }
